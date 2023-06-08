@@ -13,7 +13,20 @@ macro_rules! double {
 macro_rules! hoge {
     ($name:ident,GET) => {
         hoge!(
-            /// Hoge!!
+            /// Prints out a formatted string containing the function name and method.
+            ///
+            /// This function generates a formatted string from the function name and method
+            /// passed as identifiers, and then prints this string to the console using `println!`.
+            ///
+            /// # Examples
+            ///
+            /// ```rust
+            /// pub fn my_function() {
+            ///     println!("{}!! {}!!!", stringify!(my_function), stringify!(GET));
+            /// }
+            /// ```
+            ///
+            /// This will print: "my_function!! GET!!!" to the console.
             $name,
             GET
         );
@@ -21,7 +34,7 @@ macro_rules! hoge {
 
     ($name:ident,$method:ident) => {
         hoge!(
-            /// Hoge!!
+            #[doc = concat!("Route `", stringify!($method) ,"` requests to the given handler.")]
             $name,
             $method
         );
@@ -31,7 +44,7 @@ macro_rules! hoge {
         $(#[$attr:meta])+
         $name:ident, $method:ident
     ) => {
-        $(#[$attr])*
+        $(#[$attr])+
         pub fn $name() {
             println!("{}!! {}!!!", stringify!($name), stringify!($method));
         }
@@ -43,6 +56,8 @@ fn main() {
     println!("{}", double!(123));
     hoge!(pc, GET);
     pc();
+    hoge!(sp, POST);
+    sp();
 }
 
 #[cfg(test)]
