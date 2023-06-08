@@ -10,9 +10,39 @@ macro_rules! double {
     };
 }
 
+macro_rules! hoge {
+    ($name:ident,GET) => {
+        hoge!(
+            /// Hoge!!
+            $name,
+            GET
+        );
+    };
+
+    ($name:ident,$method:ident) => {
+        hoge!(
+            /// Hoge!!
+            $name,
+            $method
+        );
+    };
+
+    (
+        $(#[$attr:meta])+
+        $name:ident, $method:ident
+    ) => {
+        $(#[$attr])*
+        pub fn $name() {
+            println!("{}!! {}!!!", stringify!($name), stringify!($method));
+        }
+    };
+}
+
 fn main() {
     hello!();
     println!("{}", double!(123));
+    hoge!(pc, GET);
+    pc();
 }
 
 #[cfg(test)]
